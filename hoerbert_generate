@@ -14,6 +14,7 @@ if [ ! -d $TARGET_DIR ]; then
   mkdir $TARGET_DIR
 fi
 
+INDEX=0
 CONTENT=$(ls $TARGET_DIR)
 if [ $(echo CONTENT | wc -l) -gt 1 ]; then
   echo -n "Die Playlist enthält bereits Musik. Möchtest du mehr hinzufügen? [J/n]: "
