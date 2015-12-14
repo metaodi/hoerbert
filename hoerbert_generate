@@ -1,24 +1,25 @@
 #!/bin/bash
 #
-# Script to generate playlists for hoerbert
+# Skript zur Erstellung von Hörbert Playlists
 #
-# by Volkmar Wieland
+# Autor: Volkmar Wieland
 #
 ###############################################
 
-echo -n "Choose horbert playlist [0..8]: "
+echo -n "Bitte wähle die Hörbert Playlist [0..8]: "
 read PLAYLIST
 TARGET_DIR=/media/${USER}/9016-4EF8/${PLAYLIST}
+echo "$TARGET_DIR"
 
 if [ ! -d $TARGET_DIR ]; then
   mkdir $TARGET_DIR
 fi
 
 CONTENT=$(ls $TARGET_DIR)
-if [ -n CONTENT ]; then
-  echo -n "Playlist already contains music. Do you want to append more? [Y/n]: "
+if [ $(echo CONTENT | wc -l) -gt 1 ]; then
+  echo -n "Die Playlist enthält bereits Musik. Möchtest du mehr hinzufügen? [J/n]: "
   read APPEND
-  if [ "$APPEND" = "y" ]; then
+  if [ "$APPEND" = "j" ]; then
     INDEX=$(ls $TARGET_DIR | wc -l)
   else
     INDEX=0
@@ -29,10 +30,10 @@ fi
 cdparanoia -B
 
 for TRACK in *.wav; do
-  echo "Processing $TRACK"
+  echo "Verarbeite $TRACK"
   sox --buffer 131072 --multi-threaded --no-glob $TRACK --clobber -r 32000 -b 16 -e signed-integer --no-glob ${INDEX}.WAV remix - gain -n -1.5 bass +1 loudness -1 pad 0 0 dither
   INDEX=$((${INDEX}+1))
-  echo "Moving ${INDEX}.WAV to $TARGET_DIR
+  echo "Schreibe ${INDEX}.WAV nach $TARGET_DIR ...
   mv ${INDEX}.WAV $TARGET_DIR
   rm $TRACK
 done
