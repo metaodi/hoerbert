@@ -1,10 +1,38 @@
 #!/bin/bash
+#
+# Script to generate playlists for hoerbert
+#
+# by Volkmar Wieland
+#
+###############################################
+
+echo -n "Choose horbert playlist [0..8]: "
+read PLAYLIST
+TARGET_DIR=/media/${USER}/9016-4EF8/${PLAYLIST}
+
+if [ ! -d $TARGET_DIR ]; then
+  mkdir $TARGET_DIR
+fi
+
+CONTENT=$(ls $TARGET_DIR)
+if [ -n CONTENT ]; then
+  echo -n "Playlist already contains music. Do you want to append more? [Y/n]: "
+  read APPEND
+  if [ "$APPEND" = "y" ]; then
+    INDEX=$(ls $TARGET_DIR | wc -l)
+  else
+    INDEX=0
+    rm -f $TARGET_DIR/*
+  fi
+fi
 
 cdparanoia -B
 
-INDEX=0
 for TRACK in *.wav; do
+  echo "Processing $TRACK"
   sox --buffer 131072 --multi-threaded --no-glob $TRACK --clobber -r 32000 -b 16 -e signed-integer --no-glob ${INDEX}.WAV remix - gain -n -1.5 bass +1 loudness -1 pad 0 0 dither
   INDEX=$((${INDEX}+1))
+  echo "Moving ${INDEX}.WAV to $TARGET_DIR
+  mv ${INDEX}.WAV $TARGET_DIR
   rm $TRACK
 done
