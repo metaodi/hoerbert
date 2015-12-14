@@ -9,7 +9,6 @@
 echo -n "Bitte wähle die Hörbert Playlist [0..8]: "
 read PLAYLIST
 TARGET_DIR=/media/${USER}/9016-4EF8/${PLAYLIST}
-echo "$TARGET_DIR"
 
 if [ ! -d $TARGET_DIR ]; then
   mkdir $TARGET_DIR
