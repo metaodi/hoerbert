@@ -19,11 +19,11 @@ CONTENT=$(ls $TARGET_DIR)
 if [ $(echo "$CONTENT" | wc -l) -gt 1 ]; then
   echo -n "Die Playlist enthält bereits Musik. Möchtest du mehr hinzufügen? [J/n]: "
   read APPEND
-  if [ "$APPEND" = "j" ]; then
-    INDEX=$(ls $TARGET_DIR | wc -l)
-  else
+  if [ "$APPEND" = "n" ]; then
     INDEX=0
     rm -f $TARGET_DIR/*
+  else
+    INDEX=$(ls $TARGET_DIR | wc -l)
   fi
 fi
 
