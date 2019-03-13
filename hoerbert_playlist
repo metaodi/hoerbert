@@ -7,12 +7,25 @@
 #
 ###############################################
 
+# fail on error
+set -e
+
+# read config file to get BASE_DIR
+source .config &> /dev/null || echo ".config nicht gefunden, verwende Standardverzeichnis"
+
+if [ -z $BASE_DIR ]; then
+    BASE_DIR=/media/${USER}/9016-4EF8
+fi
+
 echo -n "Bitte wähle die Hörbert Playlist [0..8]: "
 read PLAYLIST
-TARGET_DIR=/media/${USER}/9016-4EF8/${PLAYLIST}
+
+TARGET_DIR=${BASE_DIR}/${PLAYLIST}
+echo "Zielverzeichnis: ${TARGET_DIR}"
+
 
 if [ ! -d $TARGET_DIR ]; then
-  mkdir $TARGET_DIR
+  mkdir -p $TARGET_DIR
 fi
 
 INDEX=0

@@ -7,7 +7,7 @@ Ein Skript um unter Linux Playlists für den Hörbert zu erstellen
 
 ### Vorbereitung
 * Speicherkarte in den Computer stecken
-* Name der Speicherkarte im Skipt in `TARGET_DIR` eintragen
+* Konfigurationvorlage `.config.template` kopieren zu `.config` und Pfad zur Speicherkarte anpassen (`BASE_DIR`)
 
 ### Benutzung
 * CD einlegen
