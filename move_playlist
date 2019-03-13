@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+# Skript zum Umbennenen von Files in einer Hoerbert Playlist
+# Dies ist nützlich um alle Dateien um einigen Positionen nach hinten zu verschieben
+#
+#############################################################
+
+set -e
+
+echo -n "Bei welcher Position sollen die Dateien beginnen? [0]"
+read offset
+
+re='^[0-9]+$'
+if ! [[ $offset =~ $re ]] ; then
+    offset=0
+fi
+
+ls *.WAV -v | cat -n | while read n f; do mv $f $((n-1+offset)).TMP; done
+
+for file in *.TMP; do
+    mv "$file" "$(basename "$file" .TMP).WAV"
+done
